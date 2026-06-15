@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Növény-kalauz – Balkonkertész</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #1a2e1a;
+      background: #f4f8f5;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      background: #155c44;
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    nav .logo { color: #fff; font-size: 1.2rem; font-weight: 700; letter-spacing: 0.5px; }
+    nav .logo span { color: #7dd9ba; }
+    nav .badge {
+      background: #1D9E75;
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #155c44 0%, #1D9E75 60%, #17876a 100%);
+      color: #fff;
+      padding: 56px 24px 64px;
+      text-align: center;
+    }
+    .hero .icon { font-size: 3rem; margin-bottom: 12px; }
+    .hero h1 { font-size: clamp(1.6rem, 4.5vw, 2.4rem); font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
+    .hero p { font-size: clamp(0.95rem, 2vw, 1.1rem); color: #c0ede0; max-width: 520px; margin: 0 auto; }
+
+    /* CONTAINER */
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 20px 60px; }
+    .section-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #1D9E75; margin-bottom: 20px; }
+
+    /* CARD */
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      margin-bottom: 14px;
+      overflow: hidden;
+      border: 1px solid #e0ede8;
+      transition: box-shadow 0.2s;
+    }
+    .card:hover { box-shadow: 0 4px 18px rgba(29,158,117,0.13); }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      cursor: pointer;
+      user-select: none;
+      gap: 12px;
+    }
+    .card-header:focus-visible { outline: 2px solid #1D9E75; outline-offset: -2px; }
+    .card-header-left { display: flex; align-items: center; gap: 14px; }
+    .card-emoji { font-size: 2rem; line-height: 1; flex-shrink: 0; }
+    .card-title { font-size: 1.15rem; font-weight: 700; color: #155c44; }
+    .card-subtitle { font-size: 0.82rem; color: #6b8f7a; margin-top: 1px; }
+
+    .chevron {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #eaf7f2;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s;
+      color: #1D9E75;
+    }
+    .chevron svg { transition: transform 0.25s; }
+    .card.open .chevron { background: #1D9E75; color: #fff; }
+    .card.open .chevron svg { transform: rotate(180deg); }
+
+    /* BODY */
+    .card-body { display: none; border-top: 1px solid #eaf0ec; }
+    .card.open .card-body { display: block; }
+
+    /* TAB BAR */
+    .tab-bar {
+      display: flex;
+      gap: 6px;
+      padding: 14px 22px 0;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      background: #eaf0ec;
+      color: #4a6d57;
+      transition: background 0.15s, color 0.15s;
+      letter-spacing: 0.2px;
+    }
+    .tab-btn:hover { background: #d4ebe0; color: #155c44; }
+    .tab-btn.active { background: #1D9E75; color: #fff; }
+
+    /* TAB PANEL */
+    .tab-panel { display: none; padding: 16px 22px 22px; }
+    .tab-panel.active { display: block; }
+
+    /* INFO GRID */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .info-block { background: #f4f8f5; border-radius: 8px; padding: 12px 14px; }
+    .info-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px; color: #1D9E75; margin-bottom: 4px; }
+    .info-value { font-size: 0.92rem; color: #2a3d2f; font-weight: 500; }
+
+    /* TIMING */
+    .timing-block { background: #fffbf0; border-radius: 8px; padding: 12px 14px; border: 1px solid #f0dfa0; }
+    .timing-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px; color: #a06c00; margin-bottom: 4px; }
+    .timing-value { font-size: 0.92rem; color: #2a3d2f; font-weight: 500; }
+
+    /* COMPANIONS */
+    .companions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 480px) { .companions-grid { grid-template-columns: 1fr; } }
+    .companions-good { background: #eaf7f2; border-radius: 8px; padding: 12px 14px; }
+    .companions-bad { background: #fdf2f0; border-radius: 8px; padding: 12px 14px; }
+    .companions-label-good { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px; color: #1D9E75; margin-bottom: 4px; }
+    .companions-label-bad { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px; color: #c0392b; margin-bottom: 4px; }
+    .companions-value { font-size: 0.9rem; color: #2a3d2f; font-weight: 500; }
+
+    /* PLANTING */
+    .planting-block { background: #f0faf5; border-radius: 8px; padding: 12px 14px; border: 1px solid #c8e8d8; }
+    .planting-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px; color: #155c44; margin-bottom: 4px; }
+    .planting-value { font-size: 0.92rem; color: #2a3d2f; font-weight: 500; }
+    .palanta-sub { margin-top: 10px; padding-top: 10px; border-top: 1px solid #c8e8d8; }
+    .palanta-sub-title { font-size: 0.78rem; font-weight: 700; color: #155c44; margin-bottom: 6px; }
+    .palanta-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .palanta-list li { font-size: 0.87rem; color: #2a3d2f; padding-left: 18px; position: relative; }
+    .palanta-list li::before { content: '→'; position: absolute; left: 0; color: #1D9E75; }
+
+    /* SYMPTOMS */
+    .symptoms-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px; color: #2471a3; margin-bottom: 8px; }
+    .symptom-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+    .symptom-card { background: #eef5fb; border-radius: 8px; padding: 10px 14px; }
+    .symptom-sign { font-size: 0.9rem; font-weight: 600; color: #1a2e1a; margin-bottom: 4px; }
+    .symptom-sign::before { content: '🔍 '; }
+    .symptom-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    @media (max-width: 480px) { .symptom-meta { grid-template-columns: 1fr; } }
+    .symptom-part-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 2px; }
+    .symptom-cause .symptom-part-label { color: #a06c00; }
+    .symptom-fix .symptom-part-label { color: #1D9E75; }
+    .symptom-part-value { font-size: 0.85rem; color: #2a3d2f; }
+
+    /* FOOTER */
+    footer { text-align: center; padding: 24px; font-size: 0.8rem; color: #6b8f7a; border-top: 1px solid #dceae3; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Balkon<span>kertész</span></div>
+  <div class="badge">Növény-kalauz</div>
+</nav>
+
+<div class="hero">
+  <div class="icon">🌿</div>
+  <h1>Növény-kalauz</h1>
+  <p>Kattints egy növényre a gondozási útmutatóért – fényigény, öntözés, ültetési idők, növénytársítás és tünetek.</p>
+</div>
+
+<div class="container">
+  <div class="section-title">6 népszerű balkonzöldség és fűszernövény</div>
+
+  <!-- 1. PARADICSOM -->
+  <div class="card" id="card-1">
+    <div class="card-header" onclick="toggleCard('card-1')" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard('card-1')">
+      <div class="card-header-left">
+        <div class="card-emoji">🍅</div>
+        <div>
+          <div class="card-title">Paradicsom</div>
+          <div class="card-subtitle">Solanum lycopersicum · teljes napfény</div>
+        </div>
+      </div>
+      <div class="chevron">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,5 7,10 12,5"/></svg>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('card-1','alapok',this)">Alapok</button>
+        <button class="tab-btn" onclick="switchTab('card-1','ultetes',this)">Ültetés</button>
+        <button class="tab-btn" onclick="switchTab('card-1','tarsitas',this)">Társítás</button>
+        <button class="tab-btn" onclick="switchTab('card-1','tunetek',this)">Tünetek</button>
+      </div>
+      <div class="tab-panel active" data-card="card-1" data-tab="alapok">
+        <div class="info-grid">
+          <div class="info-block">
+            <div class="info-label">☀️ Fényigény</div>
+            <div class="info-value">Teljes napfény, napi 6–8 óra</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">💧 Öntözés</div>
+            <div class="info-value">Rendszeres, egyenletes – a kiszáradás–túlöntözés váltakozása repedést és virágvégrothadást okoz</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">🪴 Edényméret</div>
+            <div class="info-value">Min. 20–30 liter</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">🌍 Talaj (mit vegyél)</div>
+            <div class="info-value">Paradicsom- és paprikaföld, vagy univerzális kertészeti föld + érett komposzt</div>
+          </div>
+        </div>
+        <div class="timing-block">
+          <div class="timing-label">🗓️ Mikor ültesd (Magyarország)</div>
+          <div class="timing-value">Vetés cserépbe: február–március (fűtött helyen); kiültetés balkonra: május közepe után (fagyosszentek után)</div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-1" data-tab="ultetes">
+        <div class="planting-block">
+          <div class="planting-label">🌱 Vetés és ültetés</div>
+          <div class="planting-value">0,5–1 cm mélyre vetőládába; 2–3 valódi levélnél egyelés (átültetés egyedi cserépbe). Kiültetéskor a szár alsó 1/3-a is mehet föld alá – ott apró gyökerek nőnek, erősebb lesz a növény.</div>
+          <div class="palanta-sub">
+            <div class="palanta-sub-title">🛒 Palánta vásárlása esetén</div>
+            <ul class="palanta-list">
+              <li>Válassz erős, sötétzöld, még nem virágzó palántát – a virágzó már stresszelt</li>
+              <li>A szár alsó 1/3-át is föld alá lehet helyezni, ott apró gyökerek nőnek, erősebb lesz a növény</li>
+              <li>Állítsd be a karót/támaszt már ültetéskor – később a gyökér sérülhet</li>
+              <li>Edzd a palántát kiültetés előtt: néhány napig napközben kintebb hagyva szoktasd a kültéri körülményekhez</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-1" data-tab="tarsitas">
+        <div class="companions-grid">
+          <div class="companions-good">
+            <div class="companions-label-good">✅ Jó szomszédok</div>
+            <div class="companions-value">Bazsalikom, petrezselyem, körömvirág</div>
+          </div>
+          <div class="companions-bad">
+            <div class="companions-label-bad">🚫 Kerülendő</div>
+            <div class="companions-value">Káposztafélék, kapor</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-1" data-tab="tunetek">
+        <div class="symptoms-title">🩺 Tünetek és kezelésük</div>
+        <div class="symptom-list">
+          <div class="symptom-card">
+            <div class="symptom-sign">Alulról felfelé sárguló levelek</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Tápanyaghiány vagy egyenetlen öntözés</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Egyenletes öntözés, kálium-nitrogén tápoldat</div></div>
+            </div>
+          </div>
+          <div class="symptom-card">
+            <div class="symptom-sign">Barna, rohadó rész a termés alján</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Kalciumhiány (egyenetlen öntözés okozza)</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Egyenletes öntözés + kalcium tápoldat</div></div>
+            </div>
+          </div>
+          <div class="symptom-card">
+            <div class="symptom-sign">Felkunkorodó levelek</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Hőstressz vagy túlöntözés</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Árnyékolás tűző napon, öntözés felülvizsgálata</div></div>
+            </div>
+          </div>
+          <div class="symptom-card">
+            <div class="symptom-sign">Fehéres-szürke foltok a leveleken</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Lisztharmat (magas páratartalom)</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Levegőztetés, érintett levelek eltávolítása</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. PAPRIKA -->
+  <div class="card" id="card-2">
+    <div class="card-header" onclick="toggleCard('card-2')" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard('card-2')">
+      <div class="card-header-left">
+        <div class="card-emoji">🫑</div>
+        <div>
+          <div class="card-title">Paprika</div>
+          <div class="card-subtitle">Capsicum annuum · melegigényes</div>
+        </div>
+      </div>
+      <div class="chevron">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,5 7,10 12,5"/></svg>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('card-2','alapok',this)">Alapok</button>
+        <button class="tab-btn" onclick="switchTab('card-2','ultetes',this)">Ültetés</button>
+        <button class="tab-btn" onclick="switchTab('card-2','tarsitas',this)">Társítás</button>
+        <button class="tab-btn" onclick="switchTab('card-2','tunetek',this)">Tünetek</button>
+      </div>
+      <div class="tab-panel active" data-card="card-2" data-tab="alapok">
+        <div class="info-grid">
+          <div class="info-block">
+            <div class="info-label">☀️ Fényigény</div>
+            <div class="info-value">Teljes napfény, erősen melegigényes</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">💧 Öntözés</div>
+            <div class="info-value">Mérsékelt, jó vízelvezetéssel</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">🪴 Edényméret</div>
+            <div class="info-value">10–15 liter</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">🌍 Talaj (mit vegyél)</div>
+            <div class="info-value">Paradicsom- és paprikaföld, kevés perlittel a jobb vízelvezetésért</div>
+          </div>
+        </div>
+        <div class="timing-block">
+          <div class="timing-label">🗓️ Mikor ültesd (Magyarország)</div>
+          <div class="timing-value">Vetés: február–március; kiültetés balkonra: május közepe–vége (fagyosszentek után – hidegérzékenyebb, mint a paradicsom)</div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-2" data-tab="ultetes">
+        <div class="planting-block">
+          <div class="planting-label">🌱 Vetés és ültetés</div>
+          <div class="planting-value">0,5 cm mélyre; lassan kel (10–14 nap), 22–25°C szükséges. Átültetésnél óvatosan – érzékenyebb gyökérzetű, mint a paradicsom.</div>
+          <div class="palanta-sub">
+            <div class="palanta-sub-title">🛒 Palánta vásárlása esetén</div>
+            <ul class="palanta-list">
+              <li>Ne ültesd mélyebbre, mint amilyen mélyen a cserépben volt – nem ereszt gyökeret a száron, mint a paradicsom</li>
+              <li>Csak valóban meleg időben ültesd ki – hidegérzékenyebb a paradicsomtól; edzd a palántát kiültetés előtt</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-2" data-tab="tarsitas">
+        <div class="companions-grid">
+          <div class="companions-good">
+            <div class="companions-label-good">✅ Jó szomszédok</div>
+            <div class="companions-value">Bazsalikom, petrezselyem</div>
+          </div>
+          <div class="companions-bad">
+            <div class="companions-label-bad">🚫 Kerülendő</div>
+            <div class="companions-value">Bab, kapor</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-2" data-tab="tunetek">
+        <div class="symptoms-title">🩺 Tünetek és kezelésük</div>
+        <div class="symptom-list">
+          <div class="symptom-card">
+            <div class="symptom-sign">Lehulló virágok/bimbók</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Hőstressz vagy vízhiány</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Egyenletes öntözés, árnyékolás extrém hőségben</div></div>
+            </div>
+          </div>
+          <div class="symptom-card">
+            <div class="symptom-sign">Foltos, torz levelek</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Vírus vagy levéltetű</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Érintett részek eltávolítása, levéltetű elleni kezelés</div></div>
+            </div>
+          </div>
+          <div class="symptom-card">
+            <div class="symptom-sign">Vékony szárú, dőlő növény</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Túl kevés fény</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Napos helyre áthelyezés</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. SALÁTA -->
+  <div class="card" id="card-3">
+    <div class="card-header" onclick="toggleCard('card-3')" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard('card-3')">
+      <div class="card-header-left">
+        <div class="card-emoji">🥬</div>
+        <div>
+          <div class="card-title">Saláta</div>
+          <div class="card-subtitle">Lactuca sativa · félárnyékot is tűr</div>
+        </div>
+      </div>
+      <div class="chevron">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,5 7,10 12,5"/></svg>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('card-3','alapok',this)">Alapok</button>
+        <button class="tab-btn" onclick="switchTab('card-3','ultetes',this)">Ültetés</button>
+        <button class="tab-btn" onclick="switchTab('card-3','tarsitas',this)">Társítás</button>
+        <button class="tab-btn" onclick="switchTab('card-3','tunetek',this)">Tünetek</button>
+      </div>
+      <div class="tab-panel active" data-card="card-3" data-tab="alapok">
+        <div class="info-grid">
+          <div class="info-block">
+            <div class="info-label">☀️ Fényigény</div>
+            <div class="info-value">Félárnyék is megfelelő; érzékeny a tűző, nyári napra</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">💧 Öntözés</div>
+            <div class="info-value">Gyakori, egyenletes nedvesség</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">🪴 Edényméret</div>
+            <div class="info-value">15–20 cm mély láda</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">🌍 Talaj (mit vegyél)</div>
+            <div class="info-value">Univerzális kertészeti föld vagy zöldségföld – laza, humuszos</div>
+          </div>
+        </div>
+        <div class="timing-block">
+          <div class="timing-label">🗓️ Mikor ültesd (Magyarország)</div>
+          <div class="timing-value">Március–szeptember, majdnem folyamatosan vethető; 2–3 hetente új vetés folyamatos szüretért; nyári hőségben árnyékot igényel</div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-3" data-tab="ultetes">
+        <div class="planting-block">
+          <div class="planting-label">🌱 Vetés és ültetés</div>
+          <div class="planting-value">Felületesen, max. 0,5 cm – sok fajtának fényre van szüksége a csírázáshoz. Sűrű kelésnél egyelés szükséges: a gyengébb növénykéket kihúzva ~15–20 cm helyet adunk a többinek.</div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-3" data-tab="tarsitas">
+        <div class="companions-grid">
+          <div class="companions-good">
+            <div class="companions-label-good">✅ Jó szomszédok</div>
+            <div class="companions-value">Retek, sárgarépa, eper</div>
+          </div>
+          <div class="companions-bad">
+            <div class="companions-label-bad">🚫 Kerülendő</div>
+            <div class="companions-value">Petrezselyem</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-3" data-tab="tunetek">
+        <div class="symptoms-title">🩺 Tünetek és kezelésük</div>
+        <div class="symptom-list">
+          <div class="symptom-card">
+            <div class="symptom-sign">Felmagzás, megnyúló szár</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Hőség vagy túl késői szüret</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Korai szüret, árnyékolás melegben</div></div>
+            </div>
+          </div>
+          <div class="symptom-card">
+            <div class="symptom-sign">Keserű íz</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Hőstressz, vízhiány</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Rendszeres öntözés, árnyékos hely melegben</div></div>
+            </div>
+          </div>
+          <div class="symptom-card">
+            <div class="symptom-sign">Lyukas, rágott levelek</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Csigák</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Csapdák, kávézacc a tő körül</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. EPER -->
+  <div class="card" id="card-4">
+    <div class="card-header" onclick="toggleCard('card-4')" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard('card-4')">
+      <div class="card-header-left">
+        <div class="card-emoji">🍓</div>
+        <div>
+          <div class="card-title">Eper</div>
+          <div class="card-subtitle">Fragaria × ananassa · napos hely</div>
+        </div>
+      </div>
+      <div class="chevron">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,5 7,10 12,5"/></svg>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('card-4','alapok',this)">Alapok</button>
+        <button class="tab-btn" onclick="switchTab('card-4','ultetes',this)">Ültetés</button>
+        <button class="tab-btn" onclick="switchTab('card-4','tarsitas',this)">Társítás</button>
+        <button class="tab-btn" onclick="switchTab('card-4','tunetek',this)">Tünetek</button>
+      </div>
+      <div class="tab-panel active" data-card="card-4" data-tab="alapok">
+        <div class="info-grid">
+          <div class="info-block">
+            <div class="info-label">☀️ Fényigény</div>
+            <div class="info-value">Napos hely</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">💧 Öntözés</div>
+            <div class="info-value">Rendszeres, de jó vízelvezetéssel</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">🪴 Edényméret</div>
+            <div class="info-value">15–20 cm mély balkonláda vagy dézsa</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">🌍 Talaj (mit vegyél)</div>
+            <div class="info-value">Eperföld vagy rododendronföld (savas kémhatású!) – sima univerzális föld nem ideális</div>
+          </div>
+        </div>
+        <div class="timing-block">
+          <div class="timing-label">🗓️ Mikor ültesd (Magyarország)</div>
+          <div class="timing-value">Telepítés tavasszal (március–április) vagy ősszel (augusztus–szeptember – erősebb növényt ad); termés május–június</div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-4" data-tab="ultetes">
+        <div class="planting-block">
+          <div class="planting-label">🌱 Vetés és ültetés</div>
+          <div class="planting-value">A "korona" (levelek és gyökér találkozása) talajszinten legyen. Ne túl mélyre (rothadás), ne túl magasra (kiszáradás).</div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-4" data-tab="tarsitas">
+        <div class="companions-grid">
+          <div class="companions-good">
+            <div class="companions-label-good">✅ Jó szomszédok</div>
+            <div class="companions-value">Bazsalikom, hagyma/fokhagyma</div>
+          </div>
+          <div class="companions-bad">
+            <div class="companions-label-bad">🚫 Kerülendő</div>
+            <div class="companions-value">Káposztafélék</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-4" data-tab="tunetek">
+        <div class="symptoms-title">🩺 Tünetek és kezelésük</div>
+        <div class="symptom-list">
+          <div class="symptom-card">
+            <div class="symptom-sign">Rothadó termések</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Magas páratartalom, talajérintkezés</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Szalmával alátámasztás, jobb légmozgás</div></div>
+            </div>
+          </div>
+          <div class="symptom-card">
+            <div class="symptom-sign">Sárguló, foltos levelek</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Tápanyaghiány vagy gombabetegség</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Tápoldat, érintett levelek eltávolítása</div></div>
+            </div>
+          </div>
+          <div class="symptom-card">
+            <div class="symptom-sign">Nincs termés, csak sok levél</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Túl sok nitrogén vagy nincs megporzás</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Kevesebb nitrogén, kézi megporzás balkonon</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. ÚJHAGYMA -->
+  <div class="card" id="card-5">
+    <div class="card-header" onclick="toggleCard('card-5')" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard('card-5')">
+      <div class="card-header-left">
+        <div class="card-emoji">🌱</div>
+        <div>
+          <div class="card-title">Újhagyma</div>
+          <div class="card-subtitle">Allium fistulosum · napos-félárnyékos</div>
+        </div>
+      </div>
+      <div class="chevron">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,5 7,10 12,5"/></svg>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('card-5','alapok',this)">Alapok</button>
+        <button class="tab-btn" onclick="switchTab('card-5','ultetes',this)">Ültetés</button>
+        <button class="tab-btn" onclick="switchTab('card-5','tarsitas',this)">Társítás</button>
+        <button class="tab-btn" onclick="switchTab('card-5','tunetek',this)">Tünetek</button>
+      </div>
+      <div class="tab-panel active" data-card="card-5" data-tab="alapok">
+        <div class="info-grid">
+          <div class="info-block">
+            <div class="info-label">☀️ Fényigény</div>
+            <div class="info-value">Napos–félárnyékos</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">💧 Öntözés</div>
+            <div class="info-value">A talaj soha ne száradjon ki teljesen</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">🪴 Edényméret</div>
+            <div class="info-value">15–20 cm mély láda</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">🌍 Talaj (mit vegyél)</div>
+            <div class="info-value">Univerzális kertészeti föld + kevés homok/perlit a vízelvezetésért</div>
+          </div>
+        </div>
+        <div class="timing-block">
+          <div class="timing-label">🗓️ Mikor ültesd (Magyarország)</div>
+          <div class="timing-value">Március–szeptember folyamatosan vethető, 4–6 hetente új adag folyamatos szüretért; ősszel (szeptember–október) is vethető</div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-5" data-tab="ultetes">
+        <div class="planting-block">
+          <div class="planting-label">🌱 Vetés és ültetés</div>
+          <div class="planting-value">1–1,5 cm mélyre, magról sűrűn vethető. Vékony szálban nő, nem igényel nagy egyelést.</div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-5" data-tab="tarsitas">
+        <div class="companions-grid">
+          <div class="companions-good">
+            <div class="companions-label-good">✅ Jó szomszédok</div>
+            <div class="companions-value">Sárgarépa, saláta, paradicsom</div>
+          </div>
+          <div class="companions-bad">
+            <div class="companions-label-bad">🚫 Kerülendő</div>
+            <div class="companions-value">Bab, borsó</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-5" data-tab="tunetek">
+        <div class="symptoms-title">🩺 Tünetek és kezelésük</div>
+        <div class="symptom-list">
+          <div class="symptom-card">
+            <div class="symptom-sign">Sárguló, elhaló levélhegyek</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Természetes öregedés vagy kiszáradás</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Ha az egész növény érintett, öntözés ellenőrzése</div></div>
+            </div>
+          </div>
+          <div class="symptom-card">
+            <div class="symptom-sign">Vékony, gyenge szálak</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Túl sűrű vetés vagy kevés fény</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Ritkítás, napos helyre áthelyezés</div></div>
+            </div>
+          </div>
+          <div class="symptom-card">
+            <div class="symptom-sign">Nyálkás, penészes levelek</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Túlöntözés, rossz szellőzés</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Öntözés csökkentése, szellős hely</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. BAZSALIKOM -->
+  <div class="card" id="card-6">
+    <div class="card-header" onclick="toggleCard('card-6')" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard('card-6')">
+      <div class="card-header-left">
+        <div class="card-emoji">🌿</div>
+        <div>
+          <div class="card-title">Bazsalikom</div>
+          <div class="card-subtitle">Ocimum basilicum · szupermarketes cserép átültetést igényel</div>
+        </div>
+      </div>
+      <div class="chevron">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,5 7,10 12,5"/></svg>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('card-6','alapok',this)">Alapok</button>
+        <button class="tab-btn" onclick="switchTab('card-6','ultetes',this)">Ültetés</button>
+        <button class="tab-btn" onclick="switchTab('card-6','tarsitas',this)">Társítás</button>
+        <button class="tab-btn" onclick="switchTab('card-6','tunetek',this)">Tünetek</button>
+      </div>
+      <div class="tab-panel active" data-card="card-6" data-tab="alapok">
+        <div class="info-grid">
+          <div class="info-block">
+            <div class="info-label">☀️ Fényigény</div>
+            <div class="info-value">Napos hely, de a tűző délutáni nap égetheti – reggeli nap / enyhe félárnyék ideális</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">💧 Öntözés</div>
+            <div class="info-value">Rendszeres, de pangó víz nélkül – fonnyadás jelzi az öntözési igényt</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">🪴 Edényméret</div>
+            <div class="info-value">Min. 1–2 liter / tő – ez a kulcs!</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">🌍 Talaj (mit vegyél)</div>
+            <div class="info-value">Fűszernövény föld, vagy univerzális föld + perlit – fontos a vízelvezetés</div>
+          </div>
+        </div>
+        <div class="timing-block">
+          <div class="timing-label">🗓️ Mikor ültesd (Magyarország)</div>
+          <div class="timing-value">Balkonra május közepe után (fagyosszentek után – nagyon fagyérzékeny); beltérben egész évben nevelhető megfelelő fénnyel</div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-6" data-tab="ultetes">
+        <div class="planting-block">
+          <div class="planting-label">🌱 Vetés és ültetés</div>
+          <div class="planting-value">Nagyon felületesen (1–2 mm), csak rányomkodva – apró mag, fényre van szüksége a csírázáshoz. 4–5 levélnél szétválasztás/átültetés; különösen fontos a szupermarketes cserepeknél.</div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-6" data-tab="tarsitas">
+        <div class="companions-grid">
+          <div class="companions-good">
+            <div class="companions-label-good">✅ Jó szomszédok</div>
+            <div class="companions-value">Paradicsom, paprika</div>
+          </div>
+          <div class="companions-bad">
+            <div class="companions-label-bad">🚫 Kerülendő</div>
+            <div class="companions-value">Ruta, zsálya</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-6" data-tab="tunetek">
+        <div class="symptoms-title">🩺 Tünetek és kezelésük</div>
+        <div class="symptom-list">
+          <div class="symptom-card">
+            <div class="symptom-sign">Fekete-barna foltok a leveleken</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Gombabetegség (magas páratartalom)</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Szellőzés javítása, érintett levelek eltávolítása</div></div>
+            </div>
+          </div>
+          <div class="symptom-card">
+            <div class="symptom-sign">Lekonyuló, puha szár</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Túlöntözés, gyökérrothadás</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Öntözés csökkentése, vízelvezetés ellenőrzése</div></div>
+            </div>
+          </div>
+          <div class="symptom-card">
+            <div class="symptom-sign">Megnyúlt, vékony szár kevés levéllel</div>
+            <div class="symptom-meta">
+              <div class="symptom-cause"><div class="symptom-part-label">Mire utalhat</div><div class="symptom-part-value">Kevés fény</div></div>
+              <div class="symptom-fix"><div class="symptom-part-label">Kezelés</div><div class="symptom-part-value">Fényesebb helyre áthelyezés</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>Balkonkertész · Növény-kalauz modul</footer>
+
+<script>
+  function toggleCard(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+
+  function switchTab(cardId, tabName, btn) {
+    // deactivate all panels in this card
+    document.querySelectorAll('[data-card="' + cardId + '"]').forEach(function(p) {
+      p.classList.remove('active');
+    });
+    // activate the target panel
+    var target = document.querySelector('[data-card="' + cardId + '"][data-tab="' + tabName + '"]');
+    if (target) target.classList.add('active');
+
+    // update buttons
+    btn.closest('.tab-bar').querySelectorAll('.tab-btn').forEach(function(b) {
+      b.classList.remove('active');
+    });
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
