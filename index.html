@@ -156,7 +156,7 @@
 
     /* SYMPTOMS */
     .symptoms-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px; color: #2471a3; margin-bottom: 8px; }
-    .symptom-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+    .symptom-list { display: flex; flex-direction: column; gap: 8px; }
     .symptom-card { background: #eef5fb; border-radius: 8px; padding: 10px 14px; }
     .symptom-sign { font-size: 0.9rem; font-weight: 600; color: #1a2e1a; margin-bottom: 4px; }
     .symptom-sign::before { content: '🔍 '; }
@@ -167,10 +167,31 @@
     .symptom-fix .symptom-part-label { color: #1D9E75; }
     .symptom-part-value { font-size: 0.85rem; color: #2a3d2f; }
 
+    /* TIPS */
+    .tips-warning {
+      background: #fffbea;
+      border: 1px solid #f0c040;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      font-size: 0.88rem;
+      color: #7a5200;
+      font-weight: 500;
+    }
+    .tips-section { display: flex; flex-direction: column; gap: 12px; }
+    .tips-block { border-radius: 8px; padding: 12px 14px; }
+    .tips-block.pests { background: #fff5f0; border: 1px solid #f5c5b0; }
+    .tips-block.strength { background: #f0faf5; border: 1px solid #c8e8d8; }
+    .tips-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px; margin-bottom: 6px; }
+    .tips-block.pests .tips-label { color: #c0392b; }
+    .tips-block.strength .tips-label { color: #155c44; }
+    .tips-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .tips-list li { font-size: 0.88rem; color: #2a3d2f; padding-left: 16px; position: relative; }
+    .tips-list li::before { content: '•'; position: absolute; left: 0; color: #999; }
+
     /* FOOTER */
     footer { text-align: center; padding: 24px; font-size: 0.8rem; color: #6b8f7a; border-top: 1px solid #dceae3; }
   </style>
-  <script data-goatcounter="https://balkonkertesz.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 
@@ -208,25 +229,14 @@
         <button class="tab-btn" onclick="switchTab('card-1','ultetes',this)">Ültetés</button>
         <button class="tab-btn" onclick="switchTab('card-1','tarsitas',this)">Társítás</button>
         <button class="tab-btn" onclick="switchTab('card-1','tunetek',this)">Tünetek</button>
+        <button class="tab-btn" onclick="switchTab('card-1','tippek',this)">Tippek</button>
       </div>
       <div class="tab-panel active" data-card="card-1" data-tab="alapok">
         <div class="info-grid">
-          <div class="info-block">
-            <div class="info-label">☀️ Fényigény</div>
-            <div class="info-value">Teljes napfény, napi 6–8 óra</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">💧 Öntözés</div>
-            <div class="info-value">Rendszeres, egyenletes – a kiszáradás–túlöntözés váltakozása repedést és virágvégrothadást okoz</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">🪴 Edényméret</div>
-            <div class="info-value">Min. 20–30 liter</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">🌍 Talaj (mit vegyél)</div>
-            <div class="info-value">Paradicsom- és paprikaföld, vagy univerzális kertészeti föld + érett komposzt</div>
-          </div>
+          <div class="info-block"><div class="info-label">☀️ Fényigény</div><div class="info-value">Teljes napfény, napi 6–8 óra</div></div>
+          <div class="info-block"><div class="info-label">💧 Öntözés</div><div class="info-value">Rendszeres, egyenletes – a kiszáradás–túlöntözés váltakozása repedést és virágvégrothadást okoz</div></div>
+          <div class="info-block"><div class="info-label">🪴 Edényméret</div><div class="info-value">Min. 20–30 liter</div></div>
+          <div class="info-block"><div class="info-label">🌍 Talaj (mit vegyél)</div><div class="info-value">Paradicsom- és paprikaföld, vagy univerzális kertészeti föld + érett komposzt</div></div>
         </div>
         <div class="timing-block">
           <div class="timing-label">🗓️ Mikor ültesd (Magyarország)</div>
@@ -250,14 +260,8 @@
       </div>
       <div class="tab-panel" data-card="card-1" data-tab="tarsitas">
         <div class="companions-grid">
-          <div class="companions-good">
-            <div class="companions-label-good">✅ Jó szomszédok</div>
-            <div class="companions-value">Bazsalikom, petrezselyem, körömvirág</div>
-          </div>
-          <div class="companions-bad">
-            <div class="companions-label-bad">🚫 Kerülendő</div>
-            <div class="companions-value">Káposztafélék, kapor</div>
-          </div>
+          <div class="companions-good"><div class="companions-label-good">✅ Jó szomszédok</div><div class="companions-value">Bazsalikom, petrezselyem, körömvirág</div></div>
+          <div class="companions-bad"><div class="companions-label-bad">🚫 Kerülendő</div><div class="companions-value">Káposztafélék, kapor</div></div>
         </div>
       </div>
       <div class="tab-panel" data-card="card-1" data-tab="tunetek">
@@ -293,6 +297,25 @@
           </div>
         </div>
       </div>
+      <div class="tab-panel" data-card="card-1" data-tab="tippek">
+        <div class="tips-warning">⚠️ Permetezés mindig kora reggel vagy este – soha tűző napon vagy nagy melegben, mert a növény megéghet.</div>
+        <div class="tips-section">
+          <div class="tips-block pests">
+            <div class="tips-label">🐛 Kártevők ellen</div>
+            <ul class="tips-list">
+              <li>Levéltetű ellen, ha már megjelent: narancsolaj alapú permet (gazdaboltban kapható, vegyszermentes) – figyelj a megfelelő hígításra a csomagoláson</li>
+              <li>Faecet (fahamu-ecet, gazdaboltban kapható): 5–10 ml/liter vízben hígítva, riasztja a poloskákat és levéltetveket – virágzás idején NE használd, mert károsíthatja a virágokat</li>
+            </ul>
+          </div>
+          <div class="tips-block strength">
+            <div class="tips-label">💪 Ellenállóbbá tétel</div>
+            <ul class="tips-list">
+              <li>Tejes permetezés megelőzésre: bármilyen tej, fele arányban vízzel hígítva (vagy 1:6 tej:víz), 10 naponta – bevonatot képez a leveleken, gátolja a gombabetegségeket (pl. lisztharmat) és enyhe levéltrágyaként is funkcionál</li>
+              <li>Amikor a növény eléri a 3. termés-emeletet, kezdj levéltrágyázást: keserűsó (Epsom-só), 2 evőkanál/liter vízben, 2 hetente – magnéziumhiány (sárguló levél, zöld erezettel) ellen különösen hatékony</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -316,25 +339,14 @@
         <button class="tab-btn" onclick="switchTab('card-2','ultetes',this)">Ültetés</button>
         <button class="tab-btn" onclick="switchTab('card-2','tarsitas',this)">Társítás</button>
         <button class="tab-btn" onclick="switchTab('card-2','tunetek',this)">Tünetek</button>
+        <button class="tab-btn" onclick="switchTab('card-2','tippek',this)">Tippek</button>
       </div>
       <div class="tab-panel active" data-card="card-2" data-tab="alapok">
         <div class="info-grid">
-          <div class="info-block">
-            <div class="info-label">☀️ Fényigény</div>
-            <div class="info-value">Teljes napfény, erősen melegigényes</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">💧 Öntözés</div>
-            <div class="info-value">Mérsékelt, jó vízelvezetéssel</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">🪴 Edényméret</div>
-            <div class="info-value">10–15 liter</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">🌍 Talaj (mit vegyél)</div>
-            <div class="info-value">Paradicsom- és paprikaföld, kevés perlittel a jobb vízelvezetésért</div>
-          </div>
+          <div class="info-block"><div class="info-label">☀️ Fényigény</div><div class="info-value">Teljes napfény, erősen melegigényes</div></div>
+          <div class="info-block"><div class="info-label">💧 Öntözés</div><div class="info-value">Mérsékelt, jó vízelvezetéssel</div></div>
+          <div class="info-block"><div class="info-label">🪴 Edényméret</div><div class="info-value">10–15 liter</div></div>
+          <div class="info-block"><div class="info-label">🌍 Talaj (mit vegyél)</div><div class="info-value">Paradicsom- és paprikaföld, kevés perlittel a jobb vízelvezetésért</div></div>
         </div>
         <div class="timing-block">
           <div class="timing-label">🗓️ Mikor ültesd (Magyarország)</div>
@@ -356,14 +368,8 @@
       </div>
       <div class="tab-panel" data-card="card-2" data-tab="tarsitas">
         <div class="companions-grid">
-          <div class="companions-good">
-            <div class="companions-label-good">✅ Jó szomszédok</div>
-            <div class="companions-value">Bazsalikom, petrezselyem</div>
-          </div>
-          <div class="companions-bad">
-            <div class="companions-label-bad">🚫 Kerülendő</div>
-            <div class="companions-value">Bab, kapor</div>
-          </div>
+          <div class="companions-good"><div class="companions-label-good">✅ Jó szomszédok</div><div class="companions-value">Bazsalikom, petrezselyem</div></div>
+          <div class="companions-bad"><div class="companions-label-bad">🚫 Kerülendő</div><div class="companions-value">Bab, kapor</div></div>
         </div>
       </div>
       <div class="tab-panel" data-card="card-2" data-tab="tunetek">
@@ -392,6 +398,25 @@
           </div>
         </div>
       </div>
+      <div class="tab-panel" data-card="card-2" data-tab="tippek">
+        <div class="tips-warning">⚠️ Permetezés mindig kora reggel vagy este – soha tűző napon vagy nagy melegben, mert a növény megéghet.</div>
+        <div class="tips-section">
+          <div class="tips-block pests">
+            <div class="tips-label">🐛 Kártevők ellen</div>
+            <ul class="tips-list">
+              <li>Levéltetű/poloska ellen: narancsolaj alapú permet (gazdaboltban kapható), megfelelő hígítással</li>
+              <li>Faecet: 5–10 ml/liter vízben, riasztó hatású poloska és levéltetű ellen – virágzáskor kerülendő</li>
+            </ul>
+          </div>
+          <div class="tips-block strength">
+            <div class="tips-label">💪 Ellenállóbbá tétel</div>
+            <ul class="tips-list">
+              <li>Tejes permetezés: 1:1 vagy 1:6 tej-víz arányban, 10 naponta – gombabetegségek ellen és enyhe tápanyagforrásként</li>
+              <li>Keserűsó levéltrágya a terméskötés után: 2 evőkanál/liter, 2 hetente – magnéziumhiány megelőzésére</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -415,25 +440,14 @@
         <button class="tab-btn" onclick="switchTab('card-3','ultetes',this)">Ültetés</button>
         <button class="tab-btn" onclick="switchTab('card-3','tarsitas',this)">Társítás</button>
         <button class="tab-btn" onclick="switchTab('card-3','tunetek',this)">Tünetek</button>
+        <button class="tab-btn" onclick="switchTab('card-3','tippek',this)">Tippek</button>
       </div>
       <div class="tab-panel active" data-card="card-3" data-tab="alapok">
         <div class="info-grid">
-          <div class="info-block">
-            <div class="info-label">☀️ Fényigény</div>
-            <div class="info-value">Félárnyék is megfelelő; érzékeny a tűző, nyári napra</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">💧 Öntözés</div>
-            <div class="info-value">Gyakori, egyenletes nedvesség</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">🪴 Edényméret</div>
-            <div class="info-value">15–20 cm mély láda</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">🌍 Talaj (mit vegyél)</div>
-            <div class="info-value">Univerzális kertészeti föld vagy zöldségföld – laza, humuszos</div>
-          </div>
+          <div class="info-block"><div class="info-label">☀️ Fényigény</div><div class="info-value">Félárnyék is megfelelő; érzékeny a tűző, nyári napra</div></div>
+          <div class="info-block"><div class="info-label">💧 Öntözés</div><div class="info-value">Gyakori, egyenletes nedvesség</div></div>
+          <div class="info-block"><div class="info-label">🪴 Edényméret</div><div class="info-value">15–20 cm mély láda</div></div>
+          <div class="info-block"><div class="info-label">🌍 Talaj (mit vegyél)</div><div class="info-value">Univerzális kertészeti föld vagy zöldségföld – laza, humuszos</div></div>
         </div>
         <div class="timing-block">
           <div class="timing-label">🗓️ Mikor ültesd (Magyarország)</div>
@@ -448,14 +462,8 @@
       </div>
       <div class="tab-panel" data-card="card-3" data-tab="tarsitas">
         <div class="companions-grid">
-          <div class="companions-good">
-            <div class="companions-label-good">✅ Jó szomszédok</div>
-            <div class="companions-value">Retek, sárgarépa, eper</div>
-          </div>
-          <div class="companions-bad">
-            <div class="companions-label-bad">🚫 Kerülendő</div>
-            <div class="companions-value">Petrezselyem</div>
-          </div>
+          <div class="companions-good"><div class="companions-label-good">✅ Jó szomszédok</div><div class="companions-value">Retek, sárgarépa, eper</div></div>
+          <div class="companions-bad"><div class="companions-label-bad">🚫 Kerülendő</div><div class="companions-value">Petrezselyem</div></div>
         </div>
       </div>
       <div class="tab-panel" data-card="card-3" data-tab="tunetek">
@@ -484,6 +492,23 @@
           </div>
         </div>
       </div>
+      <div class="tab-panel" data-card="card-3" data-tab="tippek">
+        <div class="tips-section">
+          <div class="tips-block pests">
+            <div class="tips-label">🐛 Kártevők ellen</div>
+            <ul class="tips-list">
+              <li>Csigák ellen: kávézacc vagy tört tojáshéj a tő körül – nem kémiai, hanem fizikai akadály</li>
+            </ul>
+          </div>
+          <div class="tips-block strength">
+            <div class="tips-label">💪 Ellenállóbbá tétel</div>
+            <ul class="tips-list">
+              <li>Ne öntözd túl – a száraz felszín kevésbé csigabarát</li>
+              <li>Erős hőség előtt árnyékolj, hogy ne menjen korán magba</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -507,25 +532,14 @@
         <button class="tab-btn" onclick="switchTab('card-4','ultetes',this)">Ültetés</button>
         <button class="tab-btn" onclick="switchTab('card-4','tarsitas',this)">Társítás</button>
         <button class="tab-btn" onclick="switchTab('card-4','tunetek',this)">Tünetek</button>
+        <button class="tab-btn" onclick="switchTab('card-4','tippek',this)">Tippek</button>
       </div>
       <div class="tab-panel active" data-card="card-4" data-tab="alapok">
         <div class="info-grid">
-          <div class="info-block">
-            <div class="info-label">☀️ Fényigény</div>
-            <div class="info-value">Napos hely</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">💧 Öntözés</div>
-            <div class="info-value">Rendszeres, de jó vízelvezetéssel</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">🪴 Edényméret</div>
-            <div class="info-value">15–20 cm mély balkonláda vagy dézsa</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">🌍 Talaj (mit vegyél)</div>
-            <div class="info-value">Eperföld vagy rododendronföld (savas kémhatású!) – sima univerzális föld nem ideális</div>
-          </div>
+          <div class="info-block"><div class="info-label">☀️ Fényigény</div><div class="info-value">Napos hely</div></div>
+          <div class="info-block"><div class="info-label">💧 Öntözés</div><div class="info-value">Rendszeres, de jó vízelvezetéssel</div></div>
+          <div class="info-block"><div class="info-label">🪴 Edényméret</div><div class="info-value">15–20 cm mély balkonláda vagy dézsa</div></div>
+          <div class="info-block"><div class="info-label">🌍 Talaj (mit vegyél)</div><div class="info-value">Eperföld vagy rododendronföld (savas kémhatású!) – sima univerzális föld nem ideális</div></div>
         </div>
         <div class="timing-block">
           <div class="timing-label">🗓️ Mikor ültesd (Magyarország)</div>
@@ -540,14 +554,8 @@
       </div>
       <div class="tab-panel" data-card="card-4" data-tab="tarsitas">
         <div class="companions-grid">
-          <div class="companions-good">
-            <div class="companions-label-good">✅ Jó szomszédok</div>
-            <div class="companions-value">Bazsalikom, hagyma/fokhagyma</div>
-          </div>
-          <div class="companions-bad">
-            <div class="companions-label-bad">🚫 Kerülendő</div>
-            <div class="companions-value">Káposztafélék</div>
-          </div>
+          <div class="companions-good"><div class="companions-label-good">✅ Jó szomszédok</div><div class="companions-value">Bazsalikom, hagyma/fokhagyma</div></div>
+          <div class="companions-bad"><div class="companions-label-bad">🚫 Kerülendő</div><div class="companions-value">Káposztafélék</div></div>
         </div>
       </div>
       <div class="tab-panel" data-card="card-4" data-tab="tunetek">
@@ -576,6 +584,24 @@
           </div>
         </div>
       </div>
+      <div class="tab-panel" data-card="card-4" data-tab="tippek">
+        <div class="tips-warning">⚠️ Permetezés mindig kora reggel vagy este – soha tűző napon vagy nagy melegben, mert a növény megéghet.</div>
+        <div class="tips-section">
+          <div class="tips-block pests">
+            <div class="tips-label">🐛 Kártevők ellen</div>
+            <ul class="tips-list">
+              <li>Madárkár ellen: háló vagy fényes szalag a termés fölé</li>
+            </ul>
+          </div>
+          <div class="tips-block strength">
+            <div class="tips-label">💪 Ellenállóbbá tétel</div>
+            <ul class="tips-list">
+              <li>Metszéssel ritkítsd a levélzetet jobb légmozgásért – kevesebb gombabetegség</li>
+              <li>Tejes permetezés megelőzésre: 1:6 tej-víz arányban – lisztharmat és más gombabetegségek ellen eperre is hatásos</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -599,25 +625,14 @@
         <button class="tab-btn" onclick="switchTab('card-5','ultetes',this)">Ültetés</button>
         <button class="tab-btn" onclick="switchTab('card-5','tarsitas',this)">Társítás</button>
         <button class="tab-btn" onclick="switchTab('card-5','tunetek',this)">Tünetek</button>
+        <button class="tab-btn" onclick="switchTab('card-5','tippek',this)">Tippek</button>
       </div>
       <div class="tab-panel active" data-card="card-5" data-tab="alapok">
         <div class="info-grid">
-          <div class="info-block">
-            <div class="info-label">☀️ Fényigény</div>
-            <div class="info-value">Napos–félárnyékos</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">💧 Öntözés</div>
-            <div class="info-value">A talaj soha ne száradjon ki teljesen</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">🪴 Edényméret</div>
-            <div class="info-value">15–20 cm mély láda</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">🌍 Talaj (mit vegyél)</div>
-            <div class="info-value">Univerzális kertészeti föld + kevés homok/perlit a vízelvezetésért</div>
-          </div>
+          <div class="info-block"><div class="info-label">☀️ Fényigény</div><div class="info-value">Napos–félárnyékos</div></div>
+          <div class="info-block"><div class="info-label">💧 Öntözés</div><div class="info-value">A talaj soha ne száradjon ki teljesen</div></div>
+          <div class="info-block"><div class="info-label">🪴 Edényméret</div><div class="info-value">15–20 cm mély láda</div></div>
+          <div class="info-block"><div class="info-label">🌍 Talaj (mit vegyél)</div><div class="info-value">Univerzális kertészeti föld + kevés homok/perlit a vízelvezetésért</div></div>
         </div>
         <div class="timing-block">
           <div class="timing-label">🗓️ Mikor ültesd (Magyarország)</div>
@@ -632,14 +647,8 @@
       </div>
       <div class="tab-panel" data-card="card-5" data-tab="tarsitas">
         <div class="companions-grid">
-          <div class="companions-good">
-            <div class="companions-label-good">✅ Jó szomszédok</div>
-            <div class="companions-value">Sárgarépa, saláta, paradicsom</div>
-          </div>
-          <div class="companions-bad">
-            <div class="companions-label-bad">🚫 Kerülendő</div>
-            <div class="companions-value">Bab, borsó</div>
-          </div>
+          <div class="companions-good"><div class="companions-label-good">✅ Jó szomszédok</div><div class="companions-value">Sárgarépa, saláta, paradicsom</div></div>
+          <div class="companions-bad"><div class="companions-label-bad">🚫 Kerülendő</div><div class="companions-value">Bab, borsó</div></div>
         </div>
       </div>
       <div class="tab-panel" data-card="card-5" data-tab="tunetek">
@@ -668,6 +677,22 @@
           </div>
         </div>
       </div>
+      <div class="tab-panel" data-card="card-5" data-tab="tippek">
+        <div class="tips-section">
+          <div class="tips-block pests">
+            <div class="tips-label">🐛 Kártevők ellen</div>
+            <ul class="tips-list">
+              <li>Természetes rovarriasztó hatású, ritkán igényel külön védelmet</li>
+            </ul>
+          </div>
+          <div class="tips-block strength">
+            <div class="tips-label">💪 Ellenállóbbá tétel</div>
+            <ul class="tips-list">
+              <li>Jó társnövény másoknak is – rovarriasztó illata miatt szívesen ültetik zöldségek mellé</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -691,25 +716,14 @@
         <button class="tab-btn" onclick="switchTab('card-6','ultetes',this)">Ültetés</button>
         <button class="tab-btn" onclick="switchTab('card-6','tarsitas',this)">Társítás</button>
         <button class="tab-btn" onclick="switchTab('card-6','tunetek',this)">Tünetek</button>
+        <button class="tab-btn" onclick="switchTab('card-6','tippek',this)">Tippek</button>
       </div>
       <div class="tab-panel active" data-card="card-6" data-tab="alapok">
         <div class="info-grid">
-          <div class="info-block">
-            <div class="info-label">☀️ Fényigény</div>
-            <div class="info-value">Napos hely, de a tűző délutáni nap égetheti – reggeli nap / enyhe félárnyék ideális</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">💧 Öntözés</div>
-            <div class="info-value">Rendszeres, de pangó víz nélkül – fonnyadás jelzi az öntözési igényt</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">🪴 Edényméret</div>
-            <div class="info-value">Min. 1–2 liter / tő – ez a kulcs!</div>
-          </div>
-          <div class="info-block">
-            <div class="info-label">🌍 Talaj (mit vegyél)</div>
-            <div class="info-value">Fűszernövény föld, vagy univerzális föld + perlit – fontos a vízelvezetés</div>
-          </div>
+          <div class="info-block"><div class="info-label">☀️ Fényigény</div><div class="info-value">Napos hely, de a tűző délutáni nap égetheti – reggeli nap / enyhe félárnyék ideális</div></div>
+          <div class="info-block"><div class="info-label">💧 Öntözés</div><div class="info-value">Rendszeres, de pangó víz nélkül – fonnyadás jelzi az öntözési igényt</div></div>
+          <div class="info-block"><div class="info-label">🪴 Edényméret</div><div class="info-value">Min. 1–2 liter / tő – ez a kulcs!</div></div>
+          <div class="info-block"><div class="info-label">🌍 Talaj (mit vegyél)</div><div class="info-value">Fűszernövény föld, vagy univerzális föld + perlit – fontos a vízelvezetés</div></div>
         </div>
         <div class="timing-block">
           <div class="timing-label">🗓️ Mikor ültesd (Magyarország)</div>
@@ -724,14 +738,8 @@
       </div>
       <div class="tab-panel" data-card="card-6" data-tab="tarsitas">
         <div class="companions-grid">
-          <div class="companions-good">
-            <div class="companions-label-good">✅ Jó szomszédok</div>
-            <div class="companions-value">Paradicsom, paprika</div>
-          </div>
-          <div class="companions-bad">
-            <div class="companions-label-bad">🚫 Kerülendő</div>
-            <div class="companions-value">Ruta, zsálya</div>
-          </div>
+          <div class="companions-good"><div class="companions-label-good">✅ Jó szomszédok</div><div class="companions-value">Paradicsom, paprika</div></div>
+          <div class="companions-bad"><div class="companions-label-bad">🚫 Kerülendő</div><div class="companions-value">Ruta, zsálya</div></div>
         </div>
       </div>
       <div class="tab-panel" data-card="card-6" data-tab="tunetek">
@@ -760,6 +768,24 @@
           </div>
         </div>
       </div>
+      <div class="tab-panel" data-card="card-6" data-tab="tippek">
+        <div class="tips-warning">⚠️ Permetezés mindig kora reggel vagy este – soha tűző napon vagy nagy melegben, mert a növény megéghet.</div>
+        <div class="tips-section">
+          <div class="tips-block pests">
+            <div class="tips-label">🐛 Kártevők ellen</div>
+            <ul class="tips-list">
+              <li>Lisztharmat ellen: jó légmozgás, ne legyen túl sűrű az állomány</li>
+            </ul>
+          </div>
+          <div class="tips-block strength">
+            <div class="tips-label">💪 Ellenállóbbá tétel</div>
+            <ul class="tips-list">
+              <li>Rovarriasztó hatású, jó társnövény paradicsomnak és paprikának</li>
+              <li>Tejes permetezés enyhe gombabetegség-megelőzésre: 1:6 tej-víz arányban</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -773,15 +799,12 @@
   }
 
   function switchTab(cardId, tabName, btn) {
-    // deactivate all panels in this card
     document.querySelectorAll('[data-card="' + cardId + '"]').forEach(function(p) {
       p.classList.remove('active');
     });
-    // activate the target panel
     var target = document.querySelector('[data-card="' + cardId + '"][data-tab="' + tabName + '"]');
     if (target) target.classList.add('active');
 
-    // update buttons
     btn.closest('.tab-bar').querySelectorAll('.tab-btn').forEach(function(b) {
       b.classList.remove('active');
     });
