@@ -191,8 +191,163 @@
 
     /* FOOTER */
     footer { text-align: center; padding: 24px; font-size: 0.8rem; color: #6b8f7a; border-top: 1px solid #dceae3; }
+
+    /* PRUNING TABLE (paradicsom/paprika metszés fül) */
+    .prune-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 0.85rem; }
+    .prune-table th, .prune-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #eaf0ec; }
+    .prune-table th { color: #1D9E75; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; }
+    .prune-table td { color: #2a3d2f; }
+    .prune-text { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .prune-text p { font-size: 0.9rem; color: #2a3d2f; }
+    .prune-text strong { color: #155c44; }
+
+    /* ANIMATION FRAMEWORK (shared across all plant animations) */
+    .anim-wrap { margin-top: 14px; background: #f8fbf9; border: 1px solid #dceae3; border-radius: 10px; padding: 14px; }
+    .anim-subtabs { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+    .anim-subtab-btn {
+      font-size: 0.78rem; font-weight: 600; padding: 5px 12px; border-radius: 18px;
+      border: none; cursor: pointer; background: #eaf0ec; color: #4a6d57;
+      transition: background 0.15s, color 0.15s;
+    }
+    .anim-subtab-btn:hover { background: #d4ebe0; color: #155c44; }
+    .anim-subtab-btn.active { background: #1D9E75; color: #fff; }
+    .anim-subtab-panel { display: none; }
+    .anim-subtab-panel.active { display: block; }
+    .anim-stage {
+      position: relative; width: 100%; min-height: 220px; height: 220px;
+      background: linear-gradient(180deg, #eef6f0 0%, #e3efe6 100%);
+      border-radius: 8px; overflow: hidden;
+    }
+    .anim-replay {
+      margin-top: 10px; background: #eaf0ec; border: none; border-radius: 20px;
+      padding: 5px 14px; font-size: 0.8rem; font-weight: 600; color: #155c44; cursor: pointer;
+    }
+    .anim-replay:hover { background: #d4ebe0; }
+    .anim-tip {
+      margin-top: 10px; background: #fffbea; border: 1px solid #f0c040; border-radius: 8px;
+      padding: 8px 12px; font-size: 0.85rem; color: #7a5200;
+    }
+    .anim-badge {
+      position: absolute; font-size: 0.7rem; font-weight: 700; padding: 3px 9px;
+      border-radius: 14px; white-space: nowrap; opacity: 0;
+    }
+    .badge-green { background: #eaf7f2; color: #1D9E75; border: 1px solid #1D9E75; }
+    .badge-red { background: #fdf2f0; color: #c0392b; border: 1px solid #c0392b; }
+    .badge-amber { background: #fffbea; color: #a06c00; border: 1px solid #f0c040; }
+    .anim-soil { position: absolute; left: 0; right: 0; bottom: 0; height: 38%; background: #8a6743; }
+    .anim-soilline { position: absolute; left: 0; right: 0; height: 2px; background: #c0392b; }
+    .anim-soillabel { position: absolute; font-size: 0.68rem; font-weight: 700; color: #c0392b; }
+
+    /* ---- PARADICSOM (vak- = vakítás, lo- = alsó levelek) ---- */
+    .vak-stem { position: absolute; left: 50%; bottom: 10%; width: 6px; height: 70%; background: #2d6b3f; }
+    .vak-leaf { position: absolute; width: 26px; height: 14px; background: #3c9a55; border-radius: 0 60% 0 60%; }
+    .vak-axil { position: absolute; left: 50%; width: 4px; height: 0; background: #4caf67; transform-origin: left center; }
+    @keyframes axil-grow { from { height: 0; } to { height: 34px; } }
+    .vak-axil.grown { animation: axil-grow 1.2s 0.4s forwards; }
+    .vak-scissors { position: absolute; font-size: 1.3rem; opacity: 0; right: -30px; }
+    @keyframes scissors-in { from { opacity: 0; right: -30px; } to { opacity: 1; right: 10px; } }
+    @keyframes scissors-cut { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-25deg); } }
+    .vak-scissors.in { animation: scissors-in 0.5s 2.2s forwards, scissors-cut 0.3s 2.7s 2; }
+    .vak-cutpiece { position: absolute; opacity: 1; }
+    @keyframes cut-fall { from { transform: translateY(0) rotate(0deg); opacity: 1; } to { transform: translateY(80px) rotate(80deg); opacity: 0; } }
+    .vak-cutpiece.fall { animation: cut-fall 0.6s 3.1s forwards; }
+    @keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .vak-badge { animation: fadein 0.5s 1.8s forwards; }
+
+    .lo-leaf { position: absolute; width: 26px; height: 14px; background: #3c9a55; border-radius: 0 60% 0 60%; transition: opacity 0.5s, transform 0.5s; }
+    .lo-leaf.gone { opacity: 0; transform: translateY(30px); }
+    @keyframes brace-grow { from { width: 0; } to { width: 60%; } }
+    .lo-brace { position: absolute; height: 2px; background: #c0392b; width: 0; }
+    .lo-brace.grown { animation: brace-grow 0.6s 2.6s forwards; }
+    .lo-bracelabel { animation: fadein 0.5s 2.8s forwards; }
+
+    /* ---- PAPRIKA (ko- = korona, ka- = karózás) ---- */
+    .ko-stem { position: absolute; left: 50%; bottom: 8%; width: 6px; height: 55%; background: #2d6b3f; }
+    .ko-branch { position: absolute; width: 4px; height: 40%; background: #2d6b3f; }
+    .ko-fruit { font-size: 1.4rem; position: absolute; }
+    .ko-axil { position: absolute; width: 4px; height: 0; background: #4caf67; }
+    .ko-axil.grown { animation: axil-grow 1s 0.5s forwards; }
+    .ko-scissors { position: absolute; font-size: 1.2rem; opacity: 0; }
+    @keyframes scissors-in2 { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    .ko-scissors.in { animation: scissors-in2 0.5s 2.1s forwards, scissors-cut 0.3s 2.6s 2; }
+    .ko-badge { animation: fadein 0.5s 0.2s forwards; }
+
+    @keyframes stake-rise { from { height: 0; } to { height: 80%; } }
+    .ka-stake { position: absolute; left: 30%; bottom: 0; width: 4px; height: 0; background: #9a7748; }
+    .ka-stake.rise { animation: stake-rise 0.8s 0.3s forwards; }
+    @keyframes stem-rise { from { height: 0; } to { height: 65%; } }
+    .ka-stem { position: absolute; left: 50%; bottom: 0; width: 5px; height: 0; background: #2d6b3f; }
+    .ka-stem.rise { animation: stem-rise 1s 0.5s forwards; }
+    @keyframes branch-grow { from { width: 0; } to { width: 30px; } }
+    .ka-branch { position: absolute; height: 4px; width: 0; background: #2d6b3f; }
+    .ka-branch.grow { animation: branch-grow 0.6s forwards; }
+    .ka-branch.d1 { animation-delay: 1.4s; }
+    .ka-branch.d2 { animation-delay: 1.6s; }
+    .ka-leaf { opacity: 0; }
+    .ka-leaf.show { animation: fadein 0.6s 1.9s forwards; }
+    @keyframes tie-grow { from { width: 0; } to { width: 14px; } }
+    .ka-tie { position: absolute; height: 6px; width: 0; background: #f0c040; }
+    .ka-tie.grow { animation: tie-grow 0.4s 2.1s forwards; }
+    .ka-badge { animation: fadein 0.5s 2.5s forwards; }
+
+    /* ---- EPER (ep-) ---- */
+    .ep-crown { position: absolute; left: 50%; width: 22px; height: 22px; border-radius: 50%; background: #6b4423; opacity: 0; transform: translate(-50%, -50%); }
+    @keyframes crown-appear { from { opacity: 0; transform: translate(-50%,-50%) scale(0.4); } to { opacity: 1; transform: translate(-50%,-50%) scale(1); } }
+    .ep-crown.appear { animation: crown-appear 0.6s 0.2s forwards; }
+    @keyframes crown-sink { from { transform: translate(-50%,-50%) translateY(0); } to { transform: translate(-50%,-50%) translateY(26px); } }
+    .ep-crown.sink { opacity: 1; animation: crown-sink 1.2s forwards; }
+    @keyframes crown-rise { from { transform: translate(-50%,-50%) translateY(0); } to { transform: translate(-50%,-50%) translateY(-22px); } }
+    .ep-crown.rise { opacity: 1; animation: crown-rise 1s forwards; }
+    .ep-root { position: absolute; width: 2px; height: 0; background: #b89060; transform-origin: top center; }
+    @keyframes eroot { from { height: 0; } to { height: 36px; } }
+    .ep-root.grow { animation: eroot 0.7s forwards; }
+    .ep-leaf { position: absolute; width: 18px; height: 12px; background: #3c9a55; border-radius: 0 60% 0 60%; opacity: 0; }
+    @keyframes leaf-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .ep-leaf.up { animation: leaf-up 0.6s forwards; }
+    .ep-root.exposed { position: absolute; width: 2px; background: #b89060; transform-origin: top center; }
+    @keyframes exproot { from { height: 0; } to { height: 22px; } }
+    .ep-root.exposed.grow { animation: exproot 0.7s forwards; }
+    .ep-rot { position: absolute; width: 0; height: 0; border-radius: 50%; background: #4a3020; opacity: 0; }
+    @keyframes rot-grow { from { opacity: 0; width: 0; height: 0; } to { opacity: 0.85; width: 30px; height: 14px; } }
+    .ep-rot.grow { animation: rot-grow 1s 1.6s forwards; }
+    .ep-icon { position: absolute; font-size: 1.2rem; opacity: 0; }
+    .ep-icon.show { animation: fadein 0.5s 2s forwards; }
+    .ep-badge { animation: fadein 0.5s 2s forwards; }
+
+    /* ---- BAZSALIKOM (bc- = csíptetés, bm- = felmagzás) ---- */
+    .bc-stem { position: absolute; left: 50%; bottom: 6%; width: 5px; height: 55%; background: #2d6b3f; }
+    .bc-leafpair { position: absolute; left: 50%; }
+    .bc-leaf { position: absolute; width: 22px; height: 12px; background: #4caf67; border-radius: 0 60% 0 60%; }
+    .bc-tip { position: absolute; left: 50%; width: 10px; height: 14px; background: #5cb86f; border-radius: 50%; transform: translateX(-50%); }
+    .bc-scissors { position: absolute; font-size: 1.2rem; opacity: 0; }
+    @keyframes bscissors-in { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bscissors-cut { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-20deg); } }
+    .bc-scissors.in { animation: bscissors-in 0.5s 1s forwards, bscissors-cut 0.3s 1.5s 2; }
+    @keyframes tip-fall { from { opacity: 1; transform: translate(-50%, 0) rotate(0deg); } to { opacity: 0; transform: translate(-50%, 60px) rotate(120deg); } }
+    .bc-tip.fall { animation: tip-fall 0.5s 1.9s forwards; }
+    .bc-shoot { position: absolute; width: 4px; height: 0; background: #2d6b3f; transform-origin: bottom center; }
+    @keyframes bshoot-grow { from { height: 0; } to { height: 26px; } }
+    .bc-shoot.grow { animation: bshoot-grow 0.5s forwards; }
+    .bc-shoot.s1 { animation-delay: 2.3s; }
+    .bc-shoot.s2 { animation-delay: 2.5s; }
+    .bc-badge { animation: fadein 0.5s 2.8s forwards; }
+
+    .bm-stem { position: absolute; left: 50%; bottom: 5%; width: 5px; height: 0; background: #2d6b3f; }
+    @keyframes stem-shoot { from { height: 0; } to { height: 45%; } }
+    .bm-stem.shoot { animation: stem-shoot 1s forwards; }
+    .bm-leaf { position: absolute; width: 18px; height: 11px; background: #4caf67; border-radius: 0 60% 0 60%; opacity: 0; }
+    @keyframes bfadein { from { opacity: 0; } to { opacity: 1; } }
+    .bm-leaf.show { animation: bfadein 0.4s forwards; }
+    .bm-spike { position: absolute; left: 50%; width: 3px; height: 0; background: #6b8f4a; }
+    @keyframes spike-grow { from { height: 0; } to { height: 24%; } }
+    .bm-spike.grow { animation: spike-grow 1s 1.3s forwards; }
+    .bm-bud { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: #b3a0d8; opacity: 0; }
+    @keyframes bud-open { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: scale(1); } }
+    .bm-bud.open { animation: bud-open 0.4s forwards; }
+    .bm-seed { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: #6b4423; opacity: 0; }
+    @keyframes seed-form { from { opacity: 0; } to { opacity: 1; } }
+    .bm-seed.form { animation: seed-form 0.4s forwards; }
   </style>
-  <script data-goatcounter="https://balkonkertesz.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 
@@ -231,6 +386,7 @@
         <button class="tab-btn" onclick="switchTab('card-1','tarsitas',this)">Társítás</button>
         <button class="tab-btn" onclick="switchTab('card-1','tunetek',this)">Tünetek</button>
         <button class="tab-btn" onclick="switchTab('card-1','tippek',this)">Tippek</button>
+        <button class="tab-btn" onclick="switchTab('card-1','metszes',this)">Metszés/Karózás</button>
       </div>
       <div class="tab-panel active" data-card="card-1" data-tab="alapok">
         <div class="info-grid">
@@ -317,6 +473,58 @@
           </div>
         </div>
       </div>
+      <div class="tab-panel" data-card="card-1" data-tab="metszes">
+        <div class="prune-text">
+          <p><strong>Karózás:</strong> ültetéskor karó/rács beállítása, laza rögzítés zsineggel/rongycsíkkal, szárnak kis mozgástere legyen.</p>
+          <p><strong>Hónaljhajtás (vakítás):</strong> 2–5 cm-nél ujjal lepattintható, reggel végezd; egy szárú = minden hónalj el, két szárú = első megtartandó.</p>
+          <p><strong>Alsó levelek:</strong> első virágfürttől hetente 1–2 levél alulról, cél: 20–30 cm csupasz szár; sárguló/foltos levelek azonnali eltávolítása.</p>
+        </div>
+        <table class="prune-table">
+          <tr><th>Időszak</th><th>Teendő</th></tr>
+          <tr><td>Ültetéskor</td><td>Karó/rács beállítása</td></tr>
+          <tr><td>10–15 cm hónaljhajtásnál</td><td>Vakítás ujjal vagy ollóval</td></tr>
+          <tr><td>Első virágfürtnél (40–50 cm)</td><td>Alsó levelek fokozatos eltávolítása</td></tr>
+          <tr><td>Hetente</td><td>Új hónaljhajtások ellenőrzése</td></tr>
+          <tr><td>Folyamatosan</td><td>Sárguló, beteg levelek azonnali eltávolítása</td></tr>
+        </table>
+
+        <div class="anim-wrap">
+          <div class="anim-subtabs">
+            <button class="anim-subtab-btn active" onclick="switchAnimSub('vak', 'vakitas', this)">Vakítás animáció</button>
+            <button class="anim-subtab-btn" onclick="switchAnimSub('vak', 'alsolevelek', this)">Alsó levelek animáció</button>
+          </div>
+
+          <div class="anim-subtab-panel active" data-anim="vak" data-sub="vakitas">
+            <div class="anim-stage" id="vak-stage-1">
+              <div class="vak-stem"></div>
+              <div class="vak-leaf" style="left:42%; top:30%;"></div>
+              <div class="vak-leaf" style="left:42%; top:50%;"></div>
+              <div class="vak-leaf" style="left:42%; top:70%;"></div>
+              <div class="vak-axil grown" style="top:50%;"></div>
+              <div class="vak-cutpiece fall" style="left:55%; top:78%;">🌿</div>
+              <div class="vak-scissors in" style="top:76%;">✂️</div>
+              <div class="anim-badge badge-green vak-badge" style="left:54%; top:62%;">hónaljhajtás — el kell távolítani</div>
+            </div>
+            <button class="anim-replay" onclick="replayAnim('vak-stage-1')">↺ Újrajátszás</button>
+            <div class="anim-tip">Tipp: 2–5 cm-nél még ujjal lepattintható — reggel végezd, hogy a seb napközben megszáradjon.</div>
+          </div>
+
+          <div class="anim-subtab-panel" data-anim="vak" data-sub="alsolevelek">
+            <div class="anim-stage" id="lo-stage-1">
+              <div class="vak-stem"></div>
+              <div class="lo-leaf" data-order="1" style="left:40%; top:78%;"></div>
+              <div class="lo-leaf" data-order="2" style="left:40%; top:64%;"></div>
+              <div class="lo-leaf" data-order="3" style="left:40%; top:50%;"></div>
+              <div class="lo-leaf" data-order="4" style="left:40%; top:36%;"></div>
+              <div class="vak-leaf" style="left:42%; top:20%;"></div>
+              <div class="lo-brace grown" style="left:20%; top:80%;"></div>
+              <div class="anim-soillabel lo-bracelabel" style="left:22%; top:84%;">20–30 cm csupasz szár</div>
+            </div>
+            <button class="anim-replay" onclick="replayAnim('lo-stage-1')">↺ Újrajátszás</button>
+            <div class="anim-tip">Tipp: Sosem egyszerre sokat — hetente 1–2 levél, mindig alulról felfelé haladva.</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -341,6 +549,7 @@
         <button class="tab-btn" onclick="switchTab('card-2','tarsitas',this)">Társítás</button>
         <button class="tab-btn" onclick="switchTab('card-2','tunetek',this)">Tünetek</button>
         <button class="tab-btn" onclick="switchTab('card-2','tippek',this)">Tippek</button>
+        <button class="tab-btn" onclick="switchTab('card-2','metszes',this)">Metszés/Karózás</button>
       </div>
       <div class="tab-panel active" data-card="card-2" data-tab="alapok">
         <div class="info-grid">
@@ -415,6 +624,59 @@
               <li>Tejes permetezés: 1:1 vagy 1:6 tej-víz arányban, 10 naponta – gombabetegségek ellen és enyhe tápanyagforrásként</li>
               <li>Keserűsó levéltrágya a terméskötés után: 2 evőkanál/liter, 2 hetente – magnéziumhiány megelőzésére</li>
             </ul>
+          </div>
+        </div>
+      </div>
+      <div class="tab-panel" data-card="card-2" data-tab="metszes">
+        <div class="prune-text">
+          <p><strong>Karózás:</strong> 20–25 cm-nél, laza rögzítés, szeles erkélyen 2–3 karó.</p>
+          <p><strong>Koronaelágazás alatti hajtások:</strong> 3–5 cm-nél kézzel; koronán felülieket soha ne távolítsd el.</p>
+          <p><strong>Alsó levelek:</strong> 25–30 cm-nél, koronaelágazás alatti szárszakasz fokozatosan csupaszítva, 10–15 cm szellős.</p>
+        </div>
+        <table class="prune-table">
+          <tr><th>Időszak</th><th>Teendő</th></tr>
+          <tr><td>Ültetéskor</td><td>Karó beállítása</td></tr>
+          <tr><td>25–30 cm-nél</td><td>Koronaelágazás alatti hajtások eltávolítása</td></tr>
+          <tr><td>25–30 cm-nél</td><td>Alsó levelek fokozatos eltávolítása</td></tr>
+          <tr><td>Hetente</td><td>Új hajtások ellenőrzése az elágazás alatt</td></tr>
+          <tr><td>Folyamatosan</td><td>Sárguló, beteg levelek azonnali eltávolítása</td></tr>
+        </table>
+
+        <div class="anim-wrap">
+          <div class="anim-subtabs">
+            <button class="anim-subtab-btn active" onclick="switchAnimSub('ko', 'korona', this)">Koronaelágazás animáció</button>
+            <button class="anim-subtab-btn" onclick="switchAnimSub('ko', 'karozas', this)">Karózás animáció</button>
+          </div>
+
+          <div class="anim-subtab-panel active" data-anim="ko" data-sub="korona">
+            <div class="anim-stage" id="ko-stage-1">
+              <div class="ko-stem"></div>
+              <div class="ko-branch" style="left:42%; top:18%; transform:rotate(-25deg);"></div>
+              <div class="ko-branch" style="left:55%; top:18%; transform:rotate(25deg);"></div>
+              <div class="ko-fruit" style="left:35%; top:14%;">🌶️</div>
+              <div class="ko-fruit" style="left:58%; top:14%;">🌶️</div>
+              <div class="ko-axil grown" style="left:50%; top:60%;"></div>
+              <div class="ko-scissors in" style="left:56%; top:90%;">✂️</div>
+              <div class="anim-badge badge-red ko-badge" style="left:50%; top:96%;">eltávolítandó hajtás</div>
+              <div class="anim-badge badge-green ko-badge" style="left:40%; top:10%;">✓ korona — megtartandó</div>
+            </div>
+            <button class="anim-replay" onclick="replayAnim('ko-stage-1')">↺ Újrajátszás</button>
+            <div class="anim-tip">Tipp: A koronán felüli ágakat soha ne távolítsd el — azok hozzák a termést.</div>
+          </div>
+
+          <div class="anim-subtab-panel" data-anim="ko" data-sub="karozas">
+            <div class="anim-stage" id="ka-stage-1">
+              <div class="ka-stake rise" style="left:30%;"></div>
+              <div class="ka-stem rise" style="left:50%;"></div>
+              <div class="ka-branch grow d1" style="left:50%; top:50%;"></div>
+              <div class="ka-branch grow d2" style="left:50%; top:35%;"></div>
+              <div class="ka-leaf show" style="position:absolute; left:38%; top:48%;">🌿</div>
+              <div class="ka-leaf show" style="position:absolute; left:58%; top:33%;">🌿</div>
+              <div class="ka-tie grow" style="left:36%; top:62%;"></div>
+              <div class="anim-badge badge-amber ka-badge" style="left:30%; top:70%;">laza kötés — ne szoríts!</div>
+            </div>
+            <button class="anim-replay" onclick="replayAnim('ka-stage-1')">↺ Újrajátszás</button>
+            <div class="anim-tip">Tipp: Zsineggel, rongycsíkkal vagy speciális kapoccsal rögzítsd — a szárnak kis mozgástere legyen.</div>
           </div>
         </div>
       </div>
@@ -551,6 +813,62 @@
         <div class="planting-block">
           <div class="planting-label">🌱 Vetés és ültetés</div>
           <div class="planting-value">A "korona" (levelek és gyökér találkozása) talajszinten legyen. Ne túl mélyre (rothadás), ne túl magasra (kiszáradás).</div>
+        </div>
+
+        <div class="anim-wrap">
+          <div class="anim-subtabs">
+            <button class="anim-subtab-btn active" onclick="switchAnimSub('ep', 'helyes', this)">✅ Helyes mélység</button>
+            <button class="anim-subtab-btn" onclick="switchAnimSub('ep', 'mely', this)">❌ Túl mély</button>
+            <button class="anim-subtab-btn" onclick="switchAnimSub('ep', 'sekely', this)">❌ Túl sekély</button>
+          </div>
+
+          <div class="anim-subtab-panel active" data-anim="ep" data-sub="helyes">
+            <div class="anim-stage" id="ep-stage-1">
+              <div class="anim-soil" style="height:50%;"></div>
+              <div class="anim-soilline" style="top:50%;"></div>
+              <div class="anim-soillabel" style="left:4%; top:44%;">talajszint</div>
+              <div class="ep-crown appear" style="top:50%;"></div>
+              <div class="ep-root grow" style="left:46%; top:50%; transform:rotate(-20deg);"></div>
+              <div class="ep-root grow" style="left:50%; top:50%;"></div>
+              <div class="ep-root grow" style="left:54%; top:50%; transform:rotate(20deg);"></div>
+              <div class="ep-leaf up" style="left:40%; top:30%;"></div>
+              <div class="ep-leaf up" style="left:50%; top:22%;"></div>
+              <div class="ep-leaf up" style="left:60%; top:30%;"></div>
+              <div class="anim-badge badge-green ep-badge" style="left:30%; top:8%;">✓ korona a talajszinten — helyes</div>
+            </div>
+            <button class="anim-replay" onclick="replayAnim('ep-stage-1')">↺ Újrajátszás</button>
+            <div class="anim-tip">Tipp: Ültetés után finoman nyomd le a talajt a gyökerek köré — de a koronát ne fedjed be földdel.</div>
+          </div>
+
+          <div class="anim-subtab-panel" data-anim="ep" data-sub="mely">
+            <div class="anim-stage" id="ep-stage-2">
+              <div class="anim-soil" style="height:50%;"></div>
+              <div class="anim-soilline" style="top:50%;"></div>
+              <div class="anim-soillabel" style="left:4%; top:44%;">talajszint</div>
+              <div class="ep-crown sink" style="top:50%;"></div>
+              <div class="ep-rot grow" style="left:50%; top:68%; transform:translateX(-50%);"></div>
+              <div class="ep-icon show" style="left:48%; top:74%;">💀</div>
+              <div class="anim-badge badge-red ep-badge" style="left:24%; top:8%;">❌ korona a föld alatt — rothadás</div>
+            </div>
+            <button class="anim-replay" onclick="replayAnim('ep-stage-2')">↺ Újrajátszás</button>
+            <div class="anim-tip">Tipp: Ha véletlenül túl mélyre kerül, azonnal emeld ki és ültesd újra.</div>
+          </div>
+
+          <div class="anim-subtab-panel" data-anim="ep" data-sub="sekely">
+            <div class="anim-stage" id="ep-stage-3">
+              <div class="anim-soil" style="height:50%;"></div>
+              <div class="anim-soilline" style="top:50%;"></div>
+              <div class="anim-soillabel" style="left:4%; top:44%;">talajszint</div>
+              <div class="ep-crown rise" style="top:50%;"></div>
+              <div class="ep-root exposed grow" style="left:46%; top:28%;"></div>
+              <div class="ep-root exposed grow" style="left:50%; top:28%;"></div>
+              <div class="ep-root exposed grow" style="left:54%; top:28%;"></div>
+              <div class="ep-icon show" style="left:48%; top:6%;">☀️</div>
+              <div class="anim-badge badge-amber ep-badge" style="left:22%; top:80%;">❌ gyökerek a levegőn — kiszáradás</div>
+            </div>
+            <button class="anim-replay" onclick="replayAnim('ep-stage-3')">↺ Újrajátszás</button>
+            <div class="anim-tip">Tipp: Ha a gyökerek kilógnak, tölts fel egy kis földet körülötte — de a koronát ne temesd el.</div>
+          </div>
         </div>
       </div>
       <div class="tab-panel" data-card="card-4" data-tab="tarsitas">
@@ -786,6 +1104,78 @@
             </ul>
           </div>
         </div>
+
+        <div class="anim-wrap">
+          <div class="anim-subtabs">
+            <button class="anim-subtab-btn active" onclick="switchAnimSub('bc', 'csiptetes', this)">✂️ Csíptetés</button>
+            <button class="anim-subtab-btn" onclick="switchAnimSub('bc', 'felmagzas', this)">⚠️ Felmagzás</button>
+            <button class="anim-subtab-btn" onclick="switchAnimSub('bc', 'osszehasonlitas', this)">📊 Összehasonlítás</button>
+          </div>
+
+          <div class="anim-subtab-panel active" data-anim="bc" data-sub="csiptetes">
+            <div class="anim-stage" id="bc-stage-1">
+              <div class="bc-stem"></div>
+              <div class="bc-leaf" style="left:38%; top:30%;"></div>
+              <div class="bc-leaf" style="left:38%; top:46%;"></div>
+              <div class="bc-leaf" style="left:38%; top:62%;"></div>
+              <div class="bc-tip fall" style="top:16%;"></div>
+              <div class="bc-scissors in" style="left:58%; top:14%;">✂️</div>
+              <div class="bc-shoot grow s1" style="left:44%; top:30%; transform:rotate(-30deg);"></div>
+              <div class="bc-shoot grow s2" style="left:56%; top:30%; transform:rotate(30deg);"></div>
+              <div class="anim-badge badge-red bc-badge" style="left:55%; top:18%;">itt vágd le</div>
+              <div class="anim-badge badge-green bc-badge" style="left:32%; top:8%;">✓ két új hajtás nő ki</div>
+            </div>
+            <button class="anim-replay" onclick="replayAnim('bc-stage-1')">↺ Újrajátszás</button>
+            <div class="anim-tip">Tipp: Mindig a levélpár felett vágj. 4–5 levélpárnál végezd el először.</div>
+          </div>
+
+          <div class="anim-subtab-panel" data-anim="bc" data-sub="felmagzas">
+            <div class="anim-stage" id="bm-stage-1">
+              <div class="bm-stem shoot" style="left:50%;"></div>
+              <div class="bm-leaf show" style="left:42%; top:60%; animation-delay:0.5s;"></div>
+              <div class="bm-leaf show" style="left:58%; top:48%; animation-delay:0.7s;"></div>
+              <div class="bm-leaf show" style="left:42%; top:38%; animation-delay:0.95s;"></div>
+              <div class="bm-spike grow" style="top:14%;"></div>
+              <div class="bm-bud open" style="left:48%; top:14%; animation-delay:2.2s;"></div>
+              <div class="bm-bud open" style="left:51%; top:18%; animation-delay:2.4s;"></div>
+              <div class="bm-bud open" style="left:47%; top:22%; animation-delay:2.6s;"></div>
+              <div class="bm-bud open" style="left:52%; top:26%; animation-delay:2.8s;"></div>
+              <div class="bm-seed form" style="left:49%; top:16%; animation-delay:3.4s;"></div>
+              <div class="bm-seed form" style="left:52%; top:20%; animation-delay:3.6s;"></div>
+              <div class="bm-seed form" style="left:48%; top:24%; animation-delay:3.8s;"></div>
+              <div class="anim-badge badge-red bc-badge" style="left:24%; top:6%; animation-delay:1.5s;">❌ virágzat — azonnal csípd le!</div>
+              <div class="anim-badge badge-amber bc-badge" style="left:18%; top:88%; animation-delay:3.9s;">⚠️ magképzés = levelek elveszítik ízüket</div>
+            </div>
+            <button class="anim-replay" onclick="replayAnim('bm-stage-1')">↺ Újrajátszás</button>
+            <div class="anim-tip">Tipp: Ha már megjelent a virágszár, csípd le azonnal. Ha már magot érlel, a levelek sajnos nem nyerik vissza ízüket.</div>
+          </div>
+
+          <div class="anim-subtab-panel" data-anim="bc" data-sub="osszehasonlitas">
+            <div class="anim-stage" id="bc-stage-2" style="display:flex;">
+              <div style="position:relative; flex:1; border-right:1px dashed #c8d8cc;">
+                <div class="bc-stem" style="left:35%; height:30%; bottom:8%;"></div>
+                <div class="bc-stem" style="left:50%; height:40%; bottom:8%;"></div>
+                <div class="bc-stem" style="left:65%; height:25%; bottom:8%;"></div>
+                <div class="bc-leaf" style="left:25%; top:55%;"></div>
+                <div class="bc-leaf" style="left:40%; top:40%;"></div>
+                <div class="bc-leaf" style="left:55%; top:30%;"></div>
+                <div class="bc-leaf" style="left:65%; top:50%;"></div>
+                <div class="anim-badge badge-green" style="opacity:1; left:14%; top:10%;">✓ bokros, sok levél</div>
+                <div class="anim-soillabel" style="color:#155c44; left:18%; bottom:2%;">rendszeresen csíptetett</div>
+              </div>
+              <div style="position:relative; flex:1;">
+                <div class="bc-stem" style="left:50%; height:80%; bottom:8%;"></div>
+                <div class="bc-leaf" style="left:43%; top:70%;"></div>
+                <div class="bm-bud open" style="left:48%; top:12%; opacity:1; animation:none;"></div>
+                <div class="bm-bud open" style="left:52%; top:16%; opacity:1; animation:none;"></div>
+                <div class="anim-badge badge-red" style="opacity:1; left:18%; top:4%;">❌ felmagzott, kevés íz</div>
+                <div class="anim-soillabel" style="color:#c0392b; left:14%; bottom:2%;">elhanyagolt, virágzó</div>
+              </div>
+            </div>
+            <button class="anim-replay" onclick="replayAnim('bc-stage-2')">↺ Újrajátszás</button>
+            <div class="anim-tip">Tipp: Hetente egyszer nézd meg — ha virágszár indul, csípd le rögtön.</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -810,6 +1200,26 @@
       b.classList.remove('active');
     });
     btn.classList.add('active');
+  }
+
+  function switchAnimSub(animId, subName, btn) {
+    document.querySelectorAll('[data-anim="' + animId + '"]').forEach(function(p) {
+      p.classList.remove('active');
+    });
+    var target = document.querySelector('[data-anim="' + animId + '"][data-sub="' + subName + '"]');
+    if (target) target.classList.add('active');
+
+    btn.closest('.anim-subtabs').querySelectorAll('.anim-subtab-btn').forEach(function(b) {
+      b.classList.remove('active');
+    });
+    btn.classList.add('active');
+  }
+
+  function replayAnim(stageId) {
+    var stage = document.getElementById(stageId);
+    if (!stage) return;
+    var clone = stage.cloneNode(true);
+    stage.parentNode.replaceChild(clone, stage);
   }
 </script>
 
